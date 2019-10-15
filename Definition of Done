@@ -1,0 +1,47 @@
+Obecné:
+Funkční databáze
+Přihlašovací profily (víceúrovňový)
+Reset hesla
+HelpDesk -> příjem zpráv, odesílání dotazů
+Intuitivní ovládání 
+On-line návod v případě složitějších operací na správu
+(volitelné) Dokumentace uživatelská a administrátorská
+
+Autor: 
+Možnost nahrání příspěvku pdf nebo doc(x)
+Editace příspěvku (minimálně popisky)
+Dostatečná informovanost o fázi recenzního řízení
+Možnost výběru z nabídky časopisů, info o zájmu
+Možnost tvorby oponentního formuláře
+
+Redaktor:
+Dostatečná informovanost
+Možnost komunikace
+Možnost volit recenzenty + posílání článku
+Zadávání úkolů
+Vyšší úroveň oprávnění
+Možnost kontroly realizace
+Administrativa Autor -> Oponent
+Časopis -> nakladatelství
+
+
+Recenzent:
+Tvorba recenzního formuláře + odesílání
+
+Šéfredaktor:
+Vyšší úroveň oprávnění než redaktor
+Zobrazování agendy všech
+Změny pouze prostřednictvím redaktora
+
+Čtenář:
+Bez přihlášení
+Zobrazení veřejných informací
+Nízká úroveň oprávnění
+
+Administrátor:
+Nejvyšší oprávnění
+(volitelné) Vlastní rozhraní
+Neomezená manipulace
+
+
+ 

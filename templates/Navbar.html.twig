@@ -1,0 +1,32 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="/rsp">Logos Polytechnikos Časopisos</a>
+  <ul class="navbar-nav mr-auto">
+    <li class="nav-item">
+      <a class="nav-link" href="/rsp">Domů</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Strana 2</a>
+    </li>
+  </ul>
+  <ul class="navbar-nav ml-auto">
+  {% if user.isLogged == "false" %}
+      <li class="nav-item">
+        <a class="nav-link" href="javascript:void(0);" data-toggle="modal" id="login-navbar" data-target="#login">Přihlásit</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="javascript:void(0);" data-toggle="modal" id="signup-navbar" data-target="#signup">Registrovat</a>
+      </li>
+  {% endif %}
+  {% if user.isLogged == "true" %}
+      <li class="nav-item">
+          <a class="nav-link"><i class="fas fa-user"></i>  {{ user.login }}</a>
+      </li>
+      <li class="nav-item">
+          <a class="nav-link"><i class="fas fa-info-circle"></i>  {{ user.role }}</a>
+      </li>
+      <li class="nav-item">
+          <a class="nav-link" href="javascript:void(0);" id="btn-logout"><i class="fas fa-sign-out-alt"></i>  Odhlásit</a>
+      </li>
+  {% endif %}
+  </ul>
+</nav>

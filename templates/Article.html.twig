@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+    <head>
+        {% include "Header.html.twig" %}
+    </head>
+
+    <body>
+        {% include "Navbar.html.twig" %}
+        {% include "Login.html.twig" %}
+        {% include "Signup.html.twig" %}
+
+        <div class="card">
+        <div class="card-header">
+            Článek {{ articleID }}
+        </div>
+        <div class="card-body">
+            <blockquote class="blockquote mb-0">
+            <p>Nadpis článku</p>
+            <footer class="blockquote-footer">Text</footer>
+            </blockquote>
+            <br>
+            <cite title="Source Title">Autor: Benedikt Buršík</cite>
+        </div>
+        </div>
+       
+        {% include "Footer.html.twig" %}
+    </body>
+</html>

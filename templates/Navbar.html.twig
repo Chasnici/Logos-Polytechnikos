@@ -1,12 +1,11 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <a class="navbar-brand" href="/rsp">Logos Polytechnikos Časopisos</a>
   <ul class="navbar-nav mr-auto">
-    <li class="nav-item">
-      <a class="nav-link" href="/rsp">Domů</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">Strana 2</a>
-    </li>
+  {% if user.isLogged == "true" %}
+  <li class="nav-item">
+      <a class="nav-link" href="/rsp/aa"><i class="fas fa-envelope"></i>  Zprávy ({{ messageCount }})</a>
+  </li>
+  {% endif %}
   </ul>
   <ul class="navbar-nav ml-auto">
   {% if user.isLogged == "false" %}
@@ -30,3 +29,6 @@
   {% endif %}
   </ul>
 </nav>
+
+
+

@@ -75,6 +75,30 @@ function Logout() {
     
 }
 
+function SendMessage() {
+
+    $.ajax({
+        type: "POST",
+        dataType: "json",
+        data: { "sendto" : $("#message-sendto").val(), "subject" : $("#message-subject").val(), "message" : $("#message-message").val() },
+        url: "http://localhost/rsp/sendmessage",
+        success: function(data){
+            // if (data.result == 0) {
+            //     $("#login-alert").attr("style", "display: inline-block");
+            //     $("#login-alert").removeClass();
+            //     $("#login-alert").addClass("alert");
+            //     $("#login-alert").addClass("alert-danger");
+            //     $("#login-alert").text("Špatné jméno nebo heslo.");
+            //     $("#login-alert").attr("style", "width:100%");
+            // }
+            if (data.result == 1) {
+                // window.open(window.location.href,"_self")
+            }
+        }
+    });
+    
+}
+
 $("#btn-signup").click(function(){
    SignUp();
 });
@@ -85,6 +109,10 @@ $("#btn-login").click(function(){
 
 $("#btn-logout").click(function(){
     Logout();
+});
+
+$("#btn-sendmessage").click(function(){
+    SendMessage();
 });
 
 $("#signup-navbar").click(function(){

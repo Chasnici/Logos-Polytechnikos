@@ -33,8 +33,8 @@ class Login {
 
     private function loadData() {
         $qb = $this->dbal->createQueryBuilder();
-        $qb->select("id, login, password, role");
-        $qb->from("user", "u");
+        $qb->select("ID, Login_name, Login_password, Role");
+        $qb->from("Person", "P");
         $qb->where("id = :id")->setParameter("id", $this->id);
 
         $this->data = $qb->execute()->fetch();
@@ -43,10 +43,10 @@ class Login {
 
     public function Login($dbal, $login, $password) {
         $qb = $dbal->createQueryBuilder();
-        $qb->select("id, login, password, role");
-        $qb->from("user", "u");
-        $qb->where("password = :password")->setParameter("password", (md5($password)));
-        $qb->andwhere("login = :login")->setParameter("login", $login);
+        $qb->select("ID, Login_name, Login_password, Role");
+        $qb->from("Person", "P");
+        $qb->where("Login_password = :password")->setParameter("password", (md5($password)));
+        $qb->andwhere("Login_name = :login")->setParameter("login", $login);
 
         return $qb->execute()->fetch();
     }
@@ -54,11 +54,11 @@ class Login {
     public function SignUp($dbal, $login, $password, $role) {
         $qb = $dbal->createQueryBuilder();
         
-        $qb->insert('user')->values(
+        $qb->insert('Person')->values(
                 array(
-                    'login' => '?',
-                    'password' => '?',
-                    'role' => '?'
+                    'Login_name' => '?',
+                    'Login_password' => '?',
+                    'Role' => '?'
                 ))
 
         ->setParameter(0, $login)
@@ -69,19 +69,19 @@ class Login {
     }
 
     public function getID() {
-        return $this->data['id'];
+        return $this->data['ID'];
     }
 
     public function getLogin() {
-        return $this->data['login'];
+        return $this->data['Login_name'];
     }
 
     public function getPasswordHash() {
-        return $this->data['password'];
+        return $this->data['Login_password'];
     }
 
     public function getRole() {
-        return $this->data['role'];
+        return $this->data['Role'];
     }
 
 }

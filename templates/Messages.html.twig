@@ -8,62 +8,70 @@
         {% include "Navbar.html.twig" %}
         {% include "Login.html.twig" %}
         {% include "Signup.html.twig" %}
+        {% set i = 0 %}
 
             <div class="container">
             
+            <br>
+            <div class="alert alert-dark" id="message-alert" role="alert" style="display: none;"> aa
+            </div>
+            
             {% if user.isLogged == "true" %}
 
-            <br>
             <div id="accordion">
             {% for message in messages %}
 
                 {% if not message.getID == null %}
+
                     <div class="card">
                         <div class="card-header bg-dark" id="headingOne">
-                        <h5 class="mb-0">
-                            <button class="btn btn-link" data-toggle="collapse" data-target="#collapse{{ message.getID }}" aria-expanded="false" aria-controls="collapseOne" style="color: white;">
-                            Zpráva {{ message.getID }}
+                        <h5 class="mb-1">  <a class="text-white">Předmět: {{ message.getSubject }}</a>
+                            <button class="btn btn-link pull-right" data-toggle="collapse" data-target="#collapse{{ message.getID }}" aria-expanded="false" aria-controls="collapseOne" style="color: white;">
+                             Zobrazit zprávu
                             </button>
                         </h5>
                         </div>
 
                         <div id="collapse{{ message.getID }}" class="collapse bg-dark" aria-labelledby="headingOne" data-parent="#accordion">
                         <div class="card-body text-white bg-dark mb-3">
-                            <h4>předmět: {{ message.getSubject }}</h4>
+                            <h6>Odesílatel: {{ messageSenders[i - 1] }}</h6>
+                            <h6>Datum: {{ message.getDate }}</h6>
+                            <br>
+                            <h6>Zpráva:</h6>
                             {{ message.getText }}
                         </div>
                         </div>
                     </div>
                 {% endif %}
 
+            {% set i = i + 1 %}
             {% endfor %}
             </div>
-
             <br>
+            
             <div class="form-group">
                  <div class="form-group">
-                    <select class="form-control" id="message-sendto"  style="width: 300px;">
-                    <option selected disabled>Příjemce</option>
-                    <option>autor@redakce.vspj.cz</option>
-                    <option>sefredaktor@redakce.vspj.cz</option>
-                    <option>redaktor@redakce.vspj.cz</option>
-                    <option>recenzent@redakce.vspj.cz</option>
-                    <option>admin@redakce.vspj.cz</option>
+                 <label for="message-sendto">Příjemce:</label>
+                    <select class="form-control" id="message-sendto" style="width: 300px;">
+                    <option selected disabled>...</option>
+                    <option id="1">autor@redakce.vspj.cz</option>
+                    <option id="2">sefredaktor@redakce.vspj.cz</option>
+                    <option id="3">redaktor@redakce.vspj.cz</option>
+                    <option id="4">recenzent@redakce.vspj.cz</option>
+                    <option id="5">admin@redakce.vspj.cz</option>
                     </select>
                 </div>
             </div>
             <div class="form-group">
-                <input type="text" class="form-control" id="message-subject" placeholder="Předmět" style="width: 300px;">
+                <label for="message-subject">Předmět:</label>
+                <input type="text" class="form-control" id="message-subject" style="width: 300px;">
             </div>
             <div class="form-group">
                 <textarea class="form-control" id="message-message" rows="3" placeholder="Zpráva"></textarea>
             </div>
             <button id="btn-sendmessage" class="btn btn-dark">Odeslat</button>
             {% else %}
-                <br>
-                <br>
-                <h4>Nejste přihlášeni.</h4>
-
+                {% include "NotAllowed.html.twig" %}
             {% endif %}
             
            

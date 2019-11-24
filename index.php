@@ -47,14 +47,12 @@ $container['view'] = function ($c) {
 $container['baseUrl'] = 'http://' . $_SERVER['HTTP_HOST'] . '/rsp/';
 
 $app->get('/', function (Request $request, Response $response, array $args) {
-
+     
     $messages = null;
-    if(isset($_SESSION['login']) && !empty($_SESSION['login'])) {
-        if(isset($_SESSION['login']) && !empty($_SESSION['login'])) {
-            if(isset($_SESSION['id']) && !empty($_SESSION['id'])) {
+    if (isset($_SESSION['login']) && !empty($_SESSION['login'])) {
+            if (isset($_SESSION['id']) && !empty($_SESSION['id'])) {
                 $messages = \Entity\Message::getMessageById($this->dbal, $_SESSION['id']);
             }
-        }
         $user = array('isLogged' => 'true', 'login' => $_SESSION['login'], 'role' => $_SESSION['role']);
     } else {
         $user = array('isLogged' => 'false');
@@ -73,11 +71,9 @@ $app->get('/', function (Request $request, Response $response, array $args) {
 $app->get('/article/{id}', function ($request, $response, $args) {
 
     $messages = null;
-    if(isset($_SESSION['login']) && !empty($_SESSION['login'])) {
-        if(isset($_SESSION['login']) && !empty($_SESSION['login'])) {
-            if(isset($_SESSION['id']) && !empty($_SESSION['id'])) {
-                $messages = \Entity\Message::getMessageById($this->dbal, $_SESSION['id']);
-            }
+    if (isset($_SESSION['login']) && !empty($_SESSION['login'])) {
+        if (isset($_SESSION['id']) && !empty($_SESSION['id'])) {
+            $messages = \Entity\Message::getMessageById($this->dbal, $_SESSION['id']);
         }
         $user = array('isLogged' => 'true', 'login' => $_SESSION['login'], 'role' => $_SESSION['role']);
     } else {
@@ -94,14 +90,12 @@ $app->get('/article/{id}', function ($request, $response, $args) {
 
 });
 
-$app->get('/aa', function ($request, $response, $args) {
+$app->get('/messages', function ($request, $response, $args) {
 
     $messages = null;
-    if(isset($_SESSION['login']) && !empty($_SESSION['login'])) {
-        if(isset($_SESSION['login']) && !empty($_SESSION['login'])) {
-            if(isset($_SESSION['id']) && !empty($_SESSION['id'])) {
-                $messages = \Entity\Message::getMessageById($this->dbal, $_SESSION['id']);
-            }
+    if (isset($_SESSION['login']) && !empty($_SESSION['login'])) {
+        if (isset($_SESSION['id']) && !empty($_SESSION['id'])) {
+            $messages = \Entity\Message::getMessageById($this->dbal, $_SESSION['id']);
         }
         $user = array('isLogged' => 'true', 'login' => $_SESSION['login'], 'role' => $_SESSION['role']);
     } else {
@@ -114,8 +108,48 @@ $app->get('/aa', function ($request, $response, $args) {
         $messageCount = count($messages) - 1;
     }
 
-    return $this->view->render($response, 'Messages.html.twig', ['user' => $user, 'messages' => $messages, 'messageCount' => $messageCount, 'baseUrl' => $this->baseUrl]); 
+    foreach ($messages as $message) {
+        if ($message !== null) {
+            $messageSender = \Entity\Login::load($this->dbal, $message->getSender());
+            $messageSenders[] = (string)($messageSender->getLogin());
+        }
+    }
+
+    return $this->view->render($response, 'Messages.html.twig', ['user' => $user, 'messages' => $messages, 'messageSenders' => $messageSenders, 'messageCount' => $messageCount, 'baseUrl' => $this->baseUrl]); 
   
+
+});
+
+$app->get('/helpdesk', function ($request, $response, $args) {
+
+    $messages = null;
+    $helpdeskMessages = null;
+    if (isset($_SESSION['login']) && !empty($_SESSION['login'])) {
+        if (isset($_SESSION['id']) && !empty($_SESSION['id'])) {
+            $messages = \Entity\Message::getMessageById($this->dbal, $_SESSION['id']);
+        }
+        $user = array('isLogged' => 'true', 'login' => $_SESSION['login'], 'role' => $_SESSION['role']);
+        if ($_SESSION['role'] == "Adminstrátor") {
+            $helpdeskMessages = \Entity\Message::getAllHelpdeskMessages($this->dbal);
+        }
+    } else {
+        $user = array('isLogged' => 'false');
+    } 
+
+    if ($messages == null) {
+        $messageCount = 0;
+    } else {
+        $messageCount = count($messages) - 1;
+    }
+
+    foreach ($helpdeskMessages as $helpdeskMessage) {
+        if ($helpdeskMessage !== null) {
+            $messageSender = \Entity\Login::load($this->dbal, $helpdeskMessage['ID_recipient']);
+            $messageSenders[] = (string)($messageSender->getLogin());
+        }
+    }
+
+    return $this->view->render($response, 'Helpdesk.html.twig', ['user' => $user, 'messages' => $messages, 'helpdeskMessages' => $helpdeskMessages, 'messageSenders' => $messageSenders, 'messageCount' => $messageCount, 'baseUrl' => $this->baseUrl]); 
 
 });
 
@@ -149,9 +183,10 @@ $app->post('/login', function ($request, $response, $args) {
     $pwd = $_POST['pwd'];
 
     if ($login = \Entity\Login::Login($this->dbal, $email, $pwd)) {
-        $_SESSION["login"] = $login['login'];
-        $_SESSION["id"] = $login['id'];
-        $_SESSION["role"] = $login['role'];
+       
+        $_SESSION["login"] = $login['Login_name'];
+        $_SESSION["id"] = $login['ID'];
+        $_SESSION["role"] = $login['Role'];
         $result = 1;
     } else {
         $_SESSION["login"] = null;
@@ -189,7 +224,21 @@ $app->post('/sendmessage', function ($request, $response, $args) {
     $message = $_POST['message'];
 
     $result = \Entity\Message::sendMessage($this->dbal, $sendto, $_SESSION['id'], $subject, $message);
+      
+    echo json_encode(array(
+        'result' => $result
+    ));
 
+});
+
+$app->post('/sendhelpdeskmessage', function ($request, $response, $args) {
+    
+    $sendto = $_POST['sendto'];
+    $subject = $_POST['subject'];
+    $message = $_POST['message'];
+
+    $result = \Entity\Message::sendHelpdeskMessage($this->dbal, $sendto, $subject, $message);
+      
     echo json_encode(array(
         'result' => $result
     ));

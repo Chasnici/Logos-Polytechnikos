@@ -153,6 +153,31 @@ $app->get('/helpdesk', function ($request, $response, $args) {
 
 });
 
+$app->get('/novy-clanek', function (Request $request, Response $response, array $args) {
+
+    $messages = null;
+    if (isset($_SESSION['login']) && !empty($_SESSION['login'])) {
+        if (isset($_SESSION['id']) && !empty($_SESSION['id'])) {
+            $messages = \Entity\Message::getMessageById($this->dbal, $_SESSION['id']);
+        }
+        if (empty($_SESSION['role']) || !in_array($_SESSION['role'], ['Autor'])) {
+            return $response->withStatus(403)->getBody()->write('Přístup odepřen');
+        }
+        $user = array('isLogged' => 'true', 'login' => $_SESSION['login'], 'role' => $_SESSION['role']);
+    } else {
+        $user = array('isLogged' => 'false');
+    }
+
+    if ($messages == null) {
+        $messageCount = 0;
+    } else {
+        $messageCount = count($messages) - 1;
+    }
+
+    return $this->view->render($response, 'NewArticle.html.twig', ['user' => $user, 'messageCount' => $messageCount, 'baseUrl' => $this->baseUrl]);
+
+});
+
 $app->post('/signup', function ($request, $response, $args) {
     
     $email = $_POST['email'];
@@ -243,6 +268,31 @@ $app->post('/sendhelpdeskmessage', function ($request, $response, $args) {
         'result' => $result
     ));
 
+});
+
+$app->post('/novy-clanek', function ($request, $response, $args) {
+
+    /** @var Request $request */
+    $post = (array)$request->getParsedBody();
+
+    $qb = $this->dbal->createQueryBuilder()
+        ->insert('Contribution')
+        ->values(
+            array(
+                'Title' => '?',
+                'Full_text' => '?',
+                'ID_autor' => '?',
+            )
+        )
+        ->setParameter(0, $post['title'])
+        ->setParameter(1, $post['full_text'])
+        ->setParameter(2, 1)
+    ;
+
+    $qb->execute();
+
+    /** @var Response $response */
+    return $response->withHeader('Location', '/~ruzick34/rsp_ver2/index.php/')->withStatus(301);
 });
 
 

@@ -53,12 +53,12 @@
                  <div class="form-group">
                  <label for="message-sendto">Příjemce:</label>
                     <select class="form-control" id="message-sendto" style="width: 300px;">
-                    <option selected disabled>...</option>
-                    <option id="1">autor@redakce.vspj.cz</option>
-                    <option id="2">sefredaktor@redakce.vspj.cz</option>
-                    <option id="3">redaktor@redakce.vspj.cz</option>
-                    <option id="4">recenzent@redakce.vspj.cz</option>
-                    <option id="5">admin@redakce.vspj.cz</option>
+                        <option selected disabled> - not selected -</option>
+                        {% for user in users %}
+                            {% if user is not null %}
+                                <option id="{{ user.ID }}">{{ user.Login_name }}</option>
+                            {% endif %}
+                        {% endfor %}
                     </select>
                 </div>
             </div>

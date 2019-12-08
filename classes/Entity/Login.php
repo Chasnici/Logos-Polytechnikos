@@ -51,6 +51,38 @@ class Login {
         return $qb->execute()->fetch();
     }
 
+    public function GetAllUsers($dbal) {
+
+        $qb = $dbal->createQueryBuilder();
+        $qb->select("ID, Login_name");
+        $qb->from("Person", "P");
+
+        return $qb->execute()->fetchall();
+    
+    }
+
+    public function getAllRecenzents($dbal) {
+
+        $qb = $dbal->createQueryBuilder();
+        $qb->select("ID, Login_name");
+        $qb->from("Person", "P");
+        $qb->where("role = :recenzent")->setParameter("recenzent", "Recenzent");
+
+        return $qb->execute()->fetchall();
+    
+    }
+
+    public function GetUser($dbal, $login) {
+
+        $qb = $dbal->createQueryBuilder();
+        $qb->select("ID");
+        $qb->from("Person", "P");
+        $qb->where("Login_name = :login")->setParameter("login", $login);
+
+        return $qb->execute()->fetch();
+    
+    }
+
     public function SignUp($dbal, $login, $password, $role) {
         $qb = $dbal->createQueryBuilder();
         

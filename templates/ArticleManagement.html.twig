@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+    <head>
+        {% include "Header.html.twig" %}
+    </head>
+
+    <body>
+        {% include "Navbar.html.twig" %}
+        {% include "Login.html.twig" %}
+        {% include "Signup.html.twig" %}
+        {% include "RecenzentSelection.html.twig" %}
+
+        <div class="container">
+            
+            <br>
+
+            {% if user.role == "Redaktor" %}
+
+            <div class="alert alert-dark" id="article-alert" role="alert" style="display: none;">
+            </div>
+
+            {% for article in articles %}
+                {% if article is not null %}
+                    {% if article.getRedaktorDecision == '1' %}
+                        {% set color = "bg-success" %} 
+                        {% set public = "Ano" %} 
+                    {% elseif article.getRedaktorDecision == '3' %}
+                        {% set color = "bg-danger" %}
+                        {% set public = "Ne" %} 
+                    {% else %}
+                        {% set color = "bg-warning" %}
+                        {% set public = "Čeká na schválení" %} 
+                    {% endif %}
+                    <div class="card text-center">
+                    <div class="card-header text-white {{ color }} articleheader{{ article.getID }}">
+                        Autor: {{ article.getAutorID }}
+                   
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Článek číslo {{ article.getID }}</h5>
+                            <p class="card-text  articlestatus{{ article.getID }}">Schváleno: {{ public }}</p>
+                            <p class="card-text">{{ article.getArticleTitle }}</p>
+                            <p class="card-text">{{ article.getArticle }}</p>
+                                {% if article.getRedaktorDecision == 2 %}
+                                    <button name="{{ article.getID }}" id="btn-article-decline{{ article.getID }}" class="btn btn-dark btn-article-decline fas fa-times-circle bg-danger"></button>
+                                {% endif %}
+                                {% if article.getRedaktorDecision == 2 or article.getRedaktorDecision == 3 %}
+                                <button name="{{ article.getID }}" id="btn-article-confirm{{ article.getID }}" class="btn btn-dark btn-article-confirm fas fa-check-circle bg-success"></button>   
+                                <br>                       
+                                <button name="{{ article.getID }}" data-toggle="modal" data-target="#recenzentselection" class="btn btn-dark btn-reviewer-select" style="margin-top:5px;">Zvolit recenzenta</button>
+                                {% endif %}
+                        </div>
+                        <div class="card-footer text-white {{ color }} articlefooter{{ article.getID }}">
+                            Datum: {{ article.getDate }}
+                        </div>
+                    </div>
+                    <br>
+                {% endif %}
+            {% endfor %}
+
+            {% else %}
+                {% include "NotAllowed.html.twig" %}
+            {% endif %}
+
+        </div>
+
+       
+        {% include "Footer.html.twig" %}
+    </body>
+</html>

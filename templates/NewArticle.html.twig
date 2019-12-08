@@ -9,19 +9,25 @@
         {% include "Login.html.twig" %}
         {% include "Signup.html.twig" %}
 
-
         <div class="container">
-
+        <br>
             <form method="post">
                 <div class="form-group">
-                    <label for="title">Název</label>
-                    <input name="title" id="title" class="form-control" required>
+                    <label for="title">Název článku</label>
+                    <input name="title" id="title" class="form-control" style="width: 300px;" required>
+                </div>
+                 <div class="form-group">
+                 <label for="message-sendto">Schvalující redaktor</label>
+                    <select class="form-control" id="message-sendto" style="width: 300px;">
+                    <option id="3" selected>redaktor@redakce.vspj.cz</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="full_text">Text</label>
                     <textarea name="full_text" id="full_text" class="form-control" required></textarea>
+                    <input name="autor_id" value="{{ user.id }}" class="form-control" hidden="hidden">
                 </div>
-                <button class="btn btn-primary">Odeslat</button>
+                <button class="btn btn-dark">Odeslat</button>
             </form>
         </div>
 

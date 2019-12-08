@@ -1,8 +1,8 @@
 <?php
 
-$name = 'rsp';
-$username = 'root';
-$password = '';
+$name = 'lanik05';
+$username = 'lanik05';
+$password = 'wt2018';
 $host = 'localhost';
 
 return [

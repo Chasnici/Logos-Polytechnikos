@@ -24,6 +24,16 @@
           <a class="nav-link" href="/~ruzick34/rsp_ver2/index.php/novy-clanek"><i class="fas fa-pen"></i>  Nový článek </a>
       </li>
   {% endif %}
+  {% if user.role == "Redaktor" %}
+      <li class="nav-item">
+          <a class="nav-link" href="/~ruzick34/rsp_ver2/index.php/sprava-clanku"><i class="fas fa-pen"></i>  Správa článků </a>
+      </li>
+  {% endif %}
+  {% if user.role == "Recenzent" %}
+      <li class="nav-item">
+          <a class="nav-link" href="/~ruzick34/rsp_ver2/index.php/recenze"><i class="fas fa-pen"></i>  Přiřazené články k recenzi </a>
+      </li>
+  {% endif %}
   </ul>
   <ul class="navbar-nav ml-auto">
   {% if user.isLogged == "false" %}

@@ -14,15 +14,15 @@
             <br>
             <div class="card">
             <div class="card-header">
-                Článek {{ articleID }}
+                Článek číslo {{ article.getID }}
             </div>
             <div class="card-body">
                 <blockquote class="blockquote mb-0">
-                <p>Nadpis článku</p>
-                <footer class="blockquote-footer">Text</footer>
+                <p>{{ article.getArticleTitle }}</p>
+                <footer class="blockquote-footer">{{ article.getArticle }}</footer>
                 </blockquote>
                 <br>
-                <cite title="Source Title">Autor: Benedikt Buršík</cite>
+                <cite title="Source Title">Autor: {{ article.getAutorID }}</cite>
             </div>
             </div>
 
